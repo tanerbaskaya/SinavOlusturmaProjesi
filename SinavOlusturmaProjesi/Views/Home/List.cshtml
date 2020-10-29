@@ -1,0 +1,41 @@
+﻿@using SinavOlusturmaProjesi.Models
+@model List<Exam>
+@{
+    ViewData["Title"] = "Sınavları Listele";
+}
+<h2 class='mb-3'>Sınavları Listele</h2>
+
+    <table id="dtBasicExample" class="table" width="100%">
+        <thead>
+            <tr>
+                <th class="th-sm">
+                    #
+                </th>
+                <th class="th-sm">
+                    Başlık
+                </th>
+                <th class="th-sm">
+                    Tarih
+                </th>
+                <th class="th-sm">
+                    İşlem
+                </th>
+            </tr>
+        </thead>
+
+        <tbody>
+            @foreach (var exam in Model)
+            {
+            <form asp-action="List" asp-controller="Home" method="post">
+                <tr>
+                    <td><input type="hidden" value="@exam.ExamId" name="examId" />@exam.ExamId</td>
+                    <td>@exam.Title</td>
+                    <td>@exam.PublishDate</td>
+                    <td><input type="submit" value="Delete" class="btn btn-outline-danger" name="submit" />
+                        <input type="submit" value="View" class="btn btn-outline-success" name="submit" /></td>
+                </tr>
+            </form>
+            }
+        </tbody>
+    </table>
+

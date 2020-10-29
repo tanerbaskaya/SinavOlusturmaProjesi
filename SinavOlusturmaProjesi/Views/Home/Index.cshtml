@@ -1,0 +1,66 @@
+﻿@model SinavOlusturmaProjesi.Models.Questions
+@{
+    ViewData["Title"] = "Home Page";
+}
+
+    @Html.DropDownList("wiredPosts", ViewBag.wiredPosts, "Lütfen Yazı Seçiniz", new { @class = "form-control", onchange = "myFunction()" })
+    <form asp-action="AddExam" asp-controller="Home" method="post">
+        <div>
+            <h4>
+                <div class="alert alert-success" role="alert">
+                    <p>
+                        <input class="form-control" asp-for="Title" value="@ViewBag.WiredTitle" readonly="readonly">
+                        <hr />
+                        <input class="form-control" asp-for="Description" value="@ViewBag.Description" >
+                    </p>
+                </div>
+            </h4>
+        </div>
+
+        <hr style="margin:40px 0px" />
+        @for (int i = 0; i < 4; i++)
+        {
+            <div class="form-group question">
+                <div class="form-group">
+                    <h5>Soru @(i + 1)</h5>
+                    <hr />
+                    <input class="form-control" asp-for="Question[i]" placeholder="Soru @(i+1)">
+                </div>
+                <div class="form-row">
+                    <div class="form-group col-md-6">
+                        <input asp-for="AnswerA[i]" placeholder="A) " class="form-control">
+                    </div>
+                    <div class="form-group col-md-6">
+                        <input asp-for="AnswerB[i]" placeholder="B) " class="form-control">
+                    </div>
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group col-md-6">
+                        <input asp-for="AnswerC[i]" placeholder="C) " class="form-control">
+                    </div>
+                    <div class="form-group col-md-6">
+                        <input asp-for="AnswerD[i]" placeholder="D) " class="form-control">
+                    </div>
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group col-md-4 mx-auto">
+                        <select class="form-control" asp-for="CorrectAnswer[i]">
+                            <option value="-1">Doğru Cevap Seç</option>
+                            <option value="A">Cevap A</option>
+                            <option value="B">Cevap B</option>
+                            <option value="C">Cevap C</option>
+                            <option value="D">Cevap D</option>
+                        </select>
+                    </div>
+                </div>
+            </div>      }
+
+        <button id="btnCreateExam" type="submit" class="btn btn-success btn-lg btn-block col-5 mx-auto">SINAV OLUŞTUR</button>
+    </form>
+    <script type="text/javascript">
+        function myFunction() {
+            var idIndex = document.getElementById("wiredPosts").value;
+            window.location.href = "?id=" + idIndex;
+        }</script>

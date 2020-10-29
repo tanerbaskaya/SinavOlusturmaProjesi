@@ -1,0 +1,44 @@
+﻿@model SinavOlusturmaProjesi.Models.User;
+@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>Index</title>
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet" />
+</head>
+<body>
+    <div class="col-sm-3 col-sm-offset-4">
+        <div class="panel panel-success" style="margin-top:180px;">
+                <div class="panel-heading text-center">
+                    <h4>Giriş Yap</h4>
+                </div>
+                <div class="panel-body">
+                    <form asp-controller="User" asp-action="Login" method="post">
+                        <div class="form-group">
+                            <label asp-for="Username">Kullanıcı Adı</label>
+                            <input asp-for="Username" class="form-control" placeholder="Kullanıcı adı">
+                            <span asp-validation-for="Username"></span>
+                        </div>
+
+                        <div class="form-group">
+                            <label asp-for="Password">Şifre</label>
+                            <input asp-for="Password" type="password" placeholder="Şifre" class="form-control">
+                            <span asp-validation-for="Password"></span>
+                        </div>
+
+                        <div class="form-group">
+                            <button id="btnLogin" type="submit" class="btn btn-primary">Giriş yap</button>
+                        </div>
+                    </form>
+                </div>
+            <label>@ViewBag.Error</label>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

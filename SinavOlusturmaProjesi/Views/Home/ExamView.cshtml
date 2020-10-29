@@ -1,0 +1,103 @@
+﻿@using SinavOlusturmaProjesi.Models
+@model Questions
+@{
+    ViewData["Title"] = "ExamView";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div style="margin-top: 10vh" class="exam mx-auto">
+    
+<div id="examMessage"></div>
+                <input type="hidden" id="examId" value="@Model.ExamId" />
+                                <h1 style="text-align:center">@Model.Title</h1>
+                                <p style="text-align:center;margin-top:5vh;">@Model.Description</p>
+
+                                                @for (int i = 0; i < 4; i += 2)
+                                                {
+                                                    string questionView = "question" + (i + 1);
+                                                <div class="row" style="margin-top:7vh;">
+                                                    <div class="col-xs-12 col-sm-12 col-md-6 col-lg-6 question">
+                                                        <h4><b>Soru @(i + 1):</b>@Model.Question[i]</h4>
+                                                        <div id="listGroup*questionnumber" class="list-group">
+                                                            <label id="@questionView-design-A" class="list-group-item list-group-item-action">
+                                                                <b><input type="radio" name="@questionView" value="A" />A)</b>@Model.AnswerA[i]
+                                                            </label>
+                                                            <label id="@questionView-design-B" class="list-group-item list-group-item-action">
+                                                                <b><input type="radio" name="@questionView" value="B" />B)</b>@Model.AnswerB[i]
+                                                            </label>
+                                                            <label id="@questionView-design-C" class="list-group-item list-group-item-action">
+                                                                <b><input type="radio" name="@questionView" value="C" />C)</b>@Model.AnswerC[i]
+                                                            </label>
+                                                            <label id="@questionView-design-D" class="list-group-item list-group-item-action">
+                                                                <b><input type="radio" name="@questionView" value="D" />D)</b>@Model.AnswerD[i]
+                                                            </label>
+                                                        </div>
+                                                    </div>
+
+                                                    <div class="col-xs-12 col-sm-12 col-md-6 col-lg-6 question">
+                                                        <h4><b>Soru @(i + 2):</b>@Model.Question[i]</h4>
+                                                        @{questionView = "question" + (i + 2);
+                                                        }
+                                                        <div id="listGroup*questionnumber+1" class="list-group">
+                                                            <label id="@questionView-design-A" class="list-group-item list-group-item-action">
+                                                                <b><input type="radio" name="@questionView" value="A" />A)</b>@Model.AnswerA[i + 1]
+                                                            </label>
+                                                            <label id="@questionView-design-B" class="list-group-item list-group-item-action">
+                                                                <b><input type="radio" name="@questionView" value="B" />B)</b>@Model.AnswerB[i + 1]
+                                                            </label>
+                                                            <label id="@questionView-design-C" class="list-group-item list-group-item-action">
+                                                                <b><input type="radio" name="@questionView" value="C" />C)</b>@Model.AnswerC[i + 1]
+                                                            </label>
+                                                            <label id="@questionView-design-D" class="list-group-item list-group-item-action"><b>
+                                                                <input type="radio" name="@questionView" value="D" />D)</b>@Model.AnswerD[i + 1]
+                                                            </label>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                }
+                                                                    <input type="hidden" value="i++" />}
+
+                                                                                <div class="form-row">
+                                                                                    <div class="form-group col-md-4 mx-auto">
+                                                                                        <input type="submit" class="btn btn-success col-12 btn-lg mx-auto" style="margin-top:5vh;" id="controlAnswer" value="Sınavı Tamamla" />
+                                                                                    </div>
+                                                                                </div>
+</div>
+<script src="~/lib/jquery/dist/jquery.js"></script>
+<script>
+    $(document).ready(function () {
+        $("#controlAnswer").click(function () {
+            var temp1 = $("input[name='question1']:checked").val();
+            var temp2 = $("input[name='question2']:checked").val();
+            var temp3 = $("input[name='question3']:checked").val();
+            var temp4 = $("input[name='question4']:checked").val();
+            var tempExamId = $("#examId").val();
+            $.ajax({
+                url: '@Url.Action("ExamAnswerCheck", "Home")?examId=' + tempExamId,
+                success: function (data) {
+                    var json = JSON.stringify(data);
+                    var obj = JSON.parse(json);
+                    obj = JSON.parse(obj);
+                    var temp = [temp1, temp2, temp3, temp4];
+                    for (var i = 0; i < 4; i++) {
+                        if (obj.questionsCorrectAnswer[i] == temp[i]) {
+                            $('#question' + (i + 1) + '-design-' + temp[i]).removeClass('list-group-item list-group-item-action');
+                            $('#question' + (i + 1) + '-design-' + temp[i]).addClass('list-group-item list-group-item-success');
+                        }
+                        else {
+                            $('#question' + (i + 1) + '-design-' + temp[i]).removeClass('list-group-item list-group-item-action');
+                            $('#question' + (i + 1) + '-design-' + temp[i]).addClass('list-group-item list-group-item-danger');
+                            $('#question' + (i + 1) + '-design-' + obj.questionsCorrectAnswer[i]).removeClass('list-group-item list-group-item-action');
+                            $('#question' + (i + 1) + '-design-' + obj.questionsCorrectAnswer[i]).addClass('list-group-item list-group-item-success');
+                        }
+                    }
+                    if (data.status == "ok") {
+                        {
+                            // $("#results").html(data);
+                    }
+                    }
+                }
+            })
+        })
+    })
+</script>
